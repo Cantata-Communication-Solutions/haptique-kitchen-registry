@@ -1,0 +1,14 @@
+{
+  "name": "haptique-kitchen-registry",
+  "private": true,
+  "version": "0.1.0",
+  "type": "commonjs",
+  "scripts": {
+    "validate": "node tools/validate-catalog.js",
+    "build": "node tools/validate-catalog.js --write"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "com.haptique.examples.denon-avr",
+  "name": "Denon AVR Example",
+  "type": "driver",
+  "version": "0.1.0",
+  "summary": "Example Kitchen listing for an AV receiver driver that renders through the OS Logical Device UI contract.",
+  "description": "This source-only example demonstrates the required metadata for a Kitchen driver listing. Real installable drivers should add artifact.downloadUrl that points to a release ZIP containing a Haptique driver manifest and local driver source.",
+  "author": "Haptique",
+  "trustLevel": "community",
+  "tags": [
+    "avr",
+    "audio",
+    "receiver"
+  ],
+  "deviceClass": "av_receiver",
+  "capabilities": [
+    "power",
+    "volume",
+    "mute",
+    "input_select"
+  ],
+  "permissions": [
+    "local_network",
+    "device_control"
+  ],
+  "compatibility": {
+    "haptiqueOS": ">=1.0.6"
+  },
+  "source": {
+    "repo": "https://github.com/Cantata-Communication-Solutions/haptique-kitchen-registry",
+    "docs": "https://github.com/Cantata-Communication-Solutions/haptique-kitchen-registry/wiki"
+  },
+  "driver": {
+    "key": "DENON_AVR_EXAMPLE",
+    "logicalDeviceUi": {
+      "defaultLayout": "av_receiver",
+      "primaryControls": [
+        "power",
+        "volume",
+        "mute",
+        "input_select"
+      ]
+    }
+  }
+}

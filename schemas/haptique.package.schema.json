@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.haptique.io/kitchen/haptique.package.schema.json",
+  "title": "Haptique Kitchen Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "type",
+    "version",
+    "summary",
+    "author",
+    "trustLevel",
+    "permissions",
+    "compatibility",
+    "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+){2,}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 80
+    },
+    "type": {
+      "enum": [
+        "driver",
+        "widget",
+        "recipe",
+        "scene",
+        "builder-template"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9.-]+)?$"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 180
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "author": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 80
+    },
+    "trustLevel": {
+      "enum": [
+        "community",
+        "verified",
+        "core-candidate",
+        "built-in",
+        "deprecated",
+        "blocked"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9_-]{1,31}$"
+      },
+      "uniqueItems": true
+    },
+    "deviceClass": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,63}$"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]{1,63}$"
+      },
+      "uniqueItems": true
+    },
+    "permissions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "device_control",
+          "local_network",
+          "cloud_access",
+          "credential_storage",
+          "background_service",
+          "media_playback",
+          "homekit_bridge",
+          "automation_runtime",
+          "dashboard_ui"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "haptiqueOS"
+      ],
+      "properties": {
+        "haptiqueOS": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo"
+      ],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "format": "uri"
+        },
+        "docs": {
+          "type": "string",
+          "format": "uri"
+        },
+        "issues": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "downloadUrl"
+      ],
+      "properties": {
+        "downloadUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      }
+    },
+    "driver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]{3,64}$"
+        },
+        "logicalDeviceUi": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "defaultLayout": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,63}$"
+            },
+            "primaryControls": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,63}$"
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "driver"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "deviceClass",
+          "capabilities",
+          "driver"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+[
+  "device_control",
+  "local_network",
+  "cloud_access",
+  "credential_storage",
+  "background_service",
+  "media_playback",
+  "homekit_bridge",
+  "automation_runtime",
+  "dashboard_ui"
+]
