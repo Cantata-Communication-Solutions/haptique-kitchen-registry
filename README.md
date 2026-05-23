@@ -45,4 +45,4 @@ tools/                   Catalog validation and generation scripts
 .github/workflows/       Pull request validation and catalog publishing
 ```
 
-Developer docs live in this repository's GitHub Wiki.
+Developer docs live under `docs/` while GitHub Wiki initialization is unavailable. The Wiki can mirror those pages once GitHub exposes the `.wiki.git` remote.
