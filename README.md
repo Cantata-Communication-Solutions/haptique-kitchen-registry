@@ -18,7 +18,7 @@ The Beta registry uses a transparent GitHub workflow:
 
 ## Trust Levels
 
-- `community`: listed after automated validation and maintainer review.
+- `community`: listed after automated validation and maintainer review; drivers install from GitHub release ZIPs with SHA256 and explicit user trust, without a Haptique signature.
 - `verified`: passed stronger install, uninstall, diagnostics, and compatibility checks.
 - `core-candidate`: accepted by Haptique for future OTA consideration.
 - `built-in`: shipped through Haptique OS OTA and shown as part of core.
