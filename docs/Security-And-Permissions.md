@@ -16,7 +16,9 @@ Supported Beta permissions:
 
 Haptique OS must show permissions before installation.
 
-An installable artifact must provide its HTTPS URL, SHA256, detached Ed25519 signature and signing key ID. Source-only entries remain permitted, without an artifact block. The schema checks the signature's format; HOS must verify it against a trusted public key and the exact downloaded ZIP before activation. Unknown artifact fields and incomplete signing metadata are rejected.
+Every installable artifact provides an HTTPS URL and SHA256. Community drivers can omit signing metadata and require explicit user trust for each unsigned release. Verified, Haptique-owned and non-driver artifacts also require a detached Ed25519 signature and trusted key ID. A supplied signature is always verified; partial signing metadata is rejected. Source-only entries omit the artifact block.
+
+Community drivers run on the hub; declared permissions are disclosures, not a code sandbox. Checksum validation detects a download that differs from the registry listing, but does not certify the developer. Community packages cannot replace protected drivers or claim Haptique App ownership. Unsigned automatic updates remain disabled.
 
 Packages may be blocked if they:
 

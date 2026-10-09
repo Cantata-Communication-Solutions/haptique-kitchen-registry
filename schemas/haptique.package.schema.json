@@ -140,9 +140,7 @@
       "additionalProperties": false,
       "required": [
         "downloadUrl",
-        "sha256",
-        "signature",
-        "signingKeyId"
+        "sha256"
       ],
       "properties": {
         "downloadUrl": {
@@ -165,6 +163,14 @@
           "maxLength": 128,
           "pattern": "^[A-Za-z0-9._-]+$"
         }
+      },
+      "dependentRequired": {
+        "signature": [
+          "signingKeyId"
+        ],
+        "signingKeyId": [
+          "signature"
+        ]
       }
     },
     "driver": {
@@ -214,6 +220,33 @@
           "capabilities",
           "driver"
         ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "type",
+          "trustLevel"
+        ],
+        "properties": {
+          "type": {
+            "const": "driver"
+          },
+          "trustLevel": {
+            "const": "community"
+          }
+        }
+      },
+      "then": {},
+      "else": {
+        "properties": {
+          "artifact": {
+            "required": [
+              "signature",
+              "signingKeyId"
+            ]
+          }
+        }
       }
     }
   ]

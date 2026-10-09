@@ -12,7 +12,7 @@ const ajv = new Ajv({allErrors: true, strict: false});
 addFormats(ajv);
 const validate = ajv.compile(schema);
 const source = JSON.parse(fs.readFileSync(path.join(root, 'packages/drivers/com.haptique.community.byd-vehicle.json')));
-delete source.artifact; // Preserve source-only coverage after BYD gains a signed release.
+delete source.artifact; // Keep source-only coverage after BYD gains a release artifact.
 
 const signedListing = () => {
   const pkg = structuredClone(source);
@@ -37,12 +37,34 @@ test('accepts the signed driver metadata required by HOS', () => {
   assert.equal(validate(signedListing()), true, JSON.stringify(validate.errors));
 });
 
-test('rejects artifacts missing any field required by HOS', () => {
+test('accepts unsigned community drivers', () => {
+  const pkg = signedListing();
+  delete pkg.artifact.signature;
+  delete pkg.artifact.signingKeyId;
+  assert.equal(validate(pkg), true, JSON.stringify(validate.errors));
+});
+
+test('requires both signature fields for other trust levels and non-driver packages', () => {
+  for (const trustLevel of ['verified', 'core-candidate', 'built-in', 'deprecated', 'blocked']) {
+    const pkg = signedListing();
+    pkg.trustLevel = trustLevel;
+    delete pkg.artifact.signature;
+    delete pkg.artifact.signingKeyId;
+    assert.equal(validate(pkg), false, trustLevel);
+  }
+  const pkg = signedListing();
+  pkg.type = 'widget';
+  delete pkg.artifact.signature;
+  delete pkg.artifact.signingKeyId;
+  assert.equal(validate(pkg), false);
+});
+
+test('rejects artifacts missing checksum, URL, or one half of a signature', () => {
   for (const field of ['downloadUrl', 'sha256', 'signature', 'signingKeyId']) {
     const pkg = signedListing();
     delete pkg.artifact[field];
     assert.equal(validate(pkg), false, `missing ${field}`);
-    assert.ok(validate.errors.some(error => error.keyword === 'required'
+    assert.ok(validate.errors.some(error => ['required', 'dependentRequired'].includes(error.keyword)
       && error.params.missingProperty === field), JSON.stringify(validate.errors));
   }
 });
