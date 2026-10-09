@@ -139,16 +139,31 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "downloadUrl"
+        "downloadUrl",
+        "sha256",
+        "signature",
+        "signingKeyId"
       ],
       "properties": {
         "downloadUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "pattern": "^https://"
         },
         "sha256": {
           "type": "string",
           "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Base64 Ed25519 signature over the HOS haptique-app-v1 metadata payload.",
+          "pattern": "^[A-Za-z0-9+/]{85}[AQgw]==$"
+        },
+        "signingKeyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._-]+$"
         }
       }
     },
